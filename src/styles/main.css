@@ -1,0 +1,46 @@
+.main-container {
+  width: 500px;
+  margin: auto;
+  padding: 20px;
+  margin-top: 50px;
+}
+
+.button-signup {
+  background: none !important;
+  border: none;
+  padding: 0 !important;
+  color: darkblue;
+  text-decoration: underline;
+  cursor: pointer;
+  float: right;
+}
+
+.button {
+  background-color: darkblue;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 460px;
+}
+
+.button:hover {
+  background-color: blue;
+}
+
+.return-link {
+  color: darkblue;
+}
+
+.account-type-select {
+  padding: 2px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  border: 1px solid lightgray;
+}
