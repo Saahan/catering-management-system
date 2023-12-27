@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import "../styles/views.css";
 import { Button, Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import axios from "axios";
 import ReactLoading from "react-loading";
 import Card from "react-bootstrap/Card";
@@ -10,6 +16,8 @@ import Card from "react-bootstrap/Card";
 export default function MyProducts(props) {
   const [show, setShow] = useState(false);
   const [productsArr, setProductsArr] = useState(null);
+  const [reload, setReload] = useState(false);
+  const storage = getStorage();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -24,8 +32,35 @@ export default function MyProducts(props) {
       .then((res) => {
         //console.log(res.data);
         setProductsArr(res.data);
+        console.log("useffect run in products");
       });
-  }, [props.userData.uid]);
+  }, [props.userData.uid, reload]);
+
+  function refresh() {
+    setReload(true);
+    setTimeout(() => {
+      setReload(false);
+    }, 500);
+  }
+
+  function deleteImage(uid, itemId) {
+    const desertRef = ref(storage, `/${uid}/${itemId}`);
+    deleteObject(desertRef)
+      .then(console.log("deleted image for product"))
+      .catch((err) => console.log(err));
+  }
+
+  function deleteProduct(uid, itemId) {
+    //console.log(uid);
+    axios({
+      method: "put",
+      url: "http://localhost:5000/api/deleteproduct",
+      data: { uid: uid, itemId: itemId },
+      headers: { "content-type": "application/json" },
+    }).then(refresh());
+
+    deleteImage(uid, itemId);
+  }
 
   return (
     <div className="container">
@@ -59,6 +94,16 @@ export default function MyProducts(props) {
                       <Card.Text>₹{item.price}</Card.Text>
                       <Card.Text>{item.description}</Card.Text>
                     </Card.Body>
+                    <Card.Footer className="text-center">
+                      <Button
+                        variant="primary"
+                        onClick={() => {
+                          deleteProduct(props.userData.uid, item.id);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                    </Card.Footer>
                   </Card>
                 </Col>
               );
@@ -72,6 +117,7 @@ export default function MyProducts(props) {
         show={show}
         handleClose={handleClose}
         userData={props.userData}
+        refresh={refresh}
       />
     </div>
   );
@@ -118,7 +164,8 @@ function AddProductModal(props) {
                 headers: { "content-type": "application/json" },
               })
                 .then(setMessage(""))
-                .finally(props.handleClose())
+                .then(props.handleClose())
+                .finally(props.refresh())
                 .catch((err) => console.log("axios err", err));
             })
             .catch((error) => {

@@ -81,8 +81,19 @@ app.get("/api/userdetails", (req, res) => {
 
 app.get("/api/getproducts", (req, res) => {
   let userId = req.query.user;
-  userDatas.find({uid: userId}).then((docs) => {res.send(docs[0].products)})
-})
+  userDatas.find({ uid: userId }).then((docs) => {
+    res.send(docs[0].products);
+  });
+});
+
+app.put("/api/deleteproduct", (req, res) => {
+  let uid = req.body.uid;
+  let itemId = req.body.itemId;
+
+  userDatas
+    .findOneAndUpdate({ uid: uid }, { $pull: { products: { id: itemId } } })
+    .then((docs) => console.log("deleted product"));
+});
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
