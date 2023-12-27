@@ -79,12 +79,16 @@ app.get("/api/userdetails", (req, res) => {
   });
 });
 
-app.get("/api/getproducts", (req, res) => {
+app.get("/api/myproducts", (req, res) => {
   let userId = req.query.user;
   userDatas.find({ uid: userId }).then((docs) => {
     res.send(docs[0].products);
   });
 });
+
+app.get("/api/productlist", (req, res) => {
+  userDatas.find({accountType: "Seller"}).then((docs) => {res.send(docs)});
+})
 
 app.put("/api/deleteproduct", (req, res) => {
   let uid = req.body.uid;

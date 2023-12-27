@@ -24,7 +24,7 @@ export default function MyProducts(props) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/getproducts", {
+      .get("http://localhost:5000/api/myproducts", {
         params: {
           user: props.userData.uid,
         },
