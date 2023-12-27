@@ -54,12 +54,35 @@ app.post("/api/signup", (req, res) => {
   userDataObj.save();
 });
 
+app.post("/api/addproduct", (req, res) => {
+  let uid = req.body.uid;
+
+  let productData = {
+    name: req.body.name,
+    price: req.body.price,
+    description: req.body.description,
+    id: req.body.id,
+    productPicUrl: req.body.productPicUrl,
+  };
+
+  userDatas
+    .findOneAndUpdate({ uid: uid }, { $push: { products: productData } })
+    .then(console.log("updated products array"));
+
+  //console.log(productData, uid);
+});
+
 app.get("/api/userdetails", (req, res) => {
   let user = req.query.user;
   userDatas.find({ uid: user }).then((docs) => {
     res.send(docs);
   });
 });
+
+app.get("/api/getproducts", (req, res) => {
+  let userId = req.query.user;
+  userDatas.find({uid: userId}).then((docs) => {res.send(docs[0].products)})
+})
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

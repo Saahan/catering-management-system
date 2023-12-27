@@ -1,7 +1,200 @@
-import React from 'react'
+import React, { useEffect, useState } from "react";
+import "../styles/views.css";
+import { Button, Row, Col } from "react-bootstrap";
+import Modal from "react-bootstrap/Modal";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import axios from "axios";
+import ReactLoading from "react-loading";
+import Card from "react-bootstrap/Card";
 
-export default function MyProducts() {
+export default function MyProducts(props) {
+  const [show, setShow] = useState(false);
+  const [productsArr, setProductsArr] = useState(null);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/getproducts", {
+        params: {
+          user: props.userData.uid,
+        },
+      })
+      .then((res) => {
+        //console.log(res.data);
+        setProductsArr(res.data);
+      });
+  }, [props.userData.uid]);
+
   return (
-    <div>MyProducts</div>
-  )
+    <div className="container">
+      <h1>My Products:</h1> <hr />
+      <div style={{ marginBottom: "40px" }}>
+        <Button
+          variant="primary"
+          className="add-product-btn"
+          onClick={() => handleShow()}
+        >
+          New
+        </Button>
+      </div>
+      <div>
+        <h4>Products:</h4>
+        <hr />
+        <Row>
+          {productsArr !== null ? (
+            productsArr.map((item) => {
+              return (
+                <Col md={6} lg={4} key={item.id}>
+                  <Card style={{ width: "15rem" }}>
+                    <Card.Img
+                      variant="top"
+                      src={item.productPicUrl}
+                      width={286}
+                      height={180}
+                    />
+                    <Card.Body>
+                      <Card.Title>{item.name}</Card.Title>
+                      <Card.Text>₹{item.price}</Card.Text>
+                      <Card.Text>{item.description}</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })
+          ) : (
+            <ReactLoading type="bubbles" color="darkblue" className="loading" />
+          )}
+        </Row>
+      </div>
+      <AddProductModal
+        show={show}
+        handleClose={handleClose}
+        userData={props.userData}
+      />
+    </div>
+  );
+}
+
+function AddProductModal(props) {
+  const storage = getStorage();
+  const [message, setMessage] = useState("");
+
+  function getUID() {
+    // Get the timestamp and convert
+    // it into alphanumeric input
+    return Date.now().toString(36);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    let productPic = e.target[3].files[0];
+    let id = getUID();
+    const storageRef = ref(storage, `/${props.userData.uid}/${id}`);
+
+    if (productPic && productPic.size < 1024000) {
+      document.getElementById("save-button").disabled = true;
+      setMessage("Working on it...");
+
+      uploadBytes(storageRef, productPic)
+        .then(() => {
+          getDownloadURL(ref(storage, `/${props.userData.uid}/${id}`))
+            .then((url) => {
+              let productData = {
+                name: e.target[0].value,
+                price: e.target[1].value,
+                description: e.target[2].value,
+                productPicUrl: url,
+                id: id,
+                uid: props.userData.uid,
+              };
+
+              axios({
+                method: "post",
+                url: "http://localhost:5000/api/addproduct",
+                data: productData,
+                headers: { "content-type": "application/json" },
+              })
+                .then(setMessage(""))
+                .finally(props.handleClose())
+                .catch((err) => console.log("axios err", err));
+            })
+            .catch((error) => {
+              console.log("download URL error", error);
+            });
+        })
+        .catch((error) => console.log("Image upload error", error));
+    } else if (productPic === undefined) {
+      setMessage("Must include a picture of the product");
+    } else {
+      setMessage("Please use image under 1MB size");
+    }
+  }
+
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      backdrop="static"
+      keyboard={false}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title>Add Product</Modal.Title>
+      </Modal.Header>
+      <form className="add-product-form" onSubmit={handleSubmit}>
+        <Modal.Body>
+          <label htmlFor="name">Name:</label>
+          <input
+            type="text"
+            required
+            placeholder="Product name"
+            id="name"
+          ></input>{" "}
+          <br />
+          <label htmlFor="price">Price (₹/kg):</label>
+          <input
+            type="text"
+            required
+            placeholder="Product price ₹/kg"
+            id="price"
+          ></input>
+          <br />
+          <label htmlFor="description">Description:</label>
+          <input
+            type="text"
+            required
+            placeholder="Product description"
+            id="description"
+          ></input>{" "}
+          <br />
+          <label htmlFor="product-image">Upload Image:</label>
+          <input
+            type="file"
+            id="product-image"
+            accept="image/png, image/jpeg"
+          ></input>
+          <div className="text-center">
+            {message !== "" && <p>{message}</p>}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          {" "}
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setMessage("");
+              props.handleClose();
+            }}
+          >
+            Close
+          </Button>
+          <Button variant="primary" type="submit" id="save-button">
+            Save
+          </Button>
+        </Modal.Footer>
+      </form>
+    </Modal>
+  );
 }
