@@ -81,11 +81,11 @@ export default function MyProducts(props) {
           {productsArr !== null ? (
             productsArr.map((item) => {
               return (
-                <Col md={6} lg={4} key={item.id}>
+                <Col md={6} lg={3} key={item.id}>
                   <Card
                     style={{
                       width: "15rem",
-                      height: "26rem",
+                      height: "24rem",
                       textAlign: "center",
                     }}
                   >

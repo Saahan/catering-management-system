@@ -1,5 +1,9 @@
 .container {
-  padding: 80px 100px 0px 100px;
+  padding: 80px 50px 0px 50px;
+}
+
+.product-container {
+  margin: 20px 20px 20px 20px;
 }
 
 .profile-div {

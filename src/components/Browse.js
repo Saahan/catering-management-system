@@ -20,15 +20,19 @@ export default function Browse(props) {
       {productsData !== null ? (
         productsData.map((item) => {
           return (
-            <Row key={item.uid}>
+            <Row key={item.uid} className="product-container">
+              <h5 style={{ marginBottom: "20px" }}>
+                Seller: {item.fname + " " + item.lname}
+              </h5>
               {item.products.map((product) => {
                 return (
-                  <Col md={6} lg={4} key={product.id}>
+                  <Col md={6} lg={3} key={product.id}>
                     <Card
                       style={{
                         width: "15rem",
-                        height: "26rem",
+                        height: "24rem",
                         textAlign: "center",
+                        marginBottom: "20px",
                       }}
                     >
                       <Card.Img
@@ -45,9 +49,6 @@ export default function Browse(props) {
                         </Card.Text>
                         <Card.Text style={{ height: "3rem" }}>
                           {product.description}
-                        </Card.Text>
-                        <Card.Text>
-                          Seller: {item.fname + " " + item.lname}
                         </Card.Text>
                       </Card.Body>
                       <Card.Footer className="text-center">
