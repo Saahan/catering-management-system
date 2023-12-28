@@ -82,17 +82,28 @@ export default function MyProducts(props) {
             productsArr.map((item) => {
               return (
                 <Col md={6} lg={4} key={item.id}>
-                  <Card style={{ width: "15rem", height:"26rem" }}>
+                  <Card
+                    style={{
+                      width: "15rem",
+                      height: "26rem",
+                      textAlign: "center",
+                    }}
+                  >
                     <Card.Img
                       variant="top"
                       src={item.productPicUrl}
-                      width={286}
-                      height={180}
+                      style={{ width: "auto", height: "9rem" }}
                     />
                     <Card.Body>
-                      <Card.Title>{item.name}</Card.Title>
-                      <Card.Text>₹{item.price}</Card.Text>
-                      <Card.Text>{item.description}</Card.Text>
+                      <Card.Title style={{ height: "3rem" }}>
+                        {item.name}
+                      </Card.Title>
+                      <Card.Text style={{ fontSize: "large" }}>
+                        ₹{item.price}
+                      </Card.Text>
+                      <Card.Text style={{ height: "3rem" }}>
+                        {item.description}
+                      </Card.Text>
                     </Card.Body>
                     <Card.Footer className="text-center">
                       <Button

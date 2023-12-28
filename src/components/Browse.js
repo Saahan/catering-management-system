@@ -24,17 +24,28 @@ export default function Browse(props) {
               {item.products.map((product) => {
                 return (
                   <Col md={6} lg={4} key={product.id}>
-                    <Card style={{ width: "15rem", height:"26rem" }}>
+                    <Card
+                      style={{
+                        width: "15rem",
+                        height: "26rem",
+                        textAlign: "center",
+                      }}
+                    >
                       <Card.Img
                         variant="top"
                         src={product.productPicUrl}
-                        width={286}
-                        height={180}
+                        style={{ width: "auto", height: "9rem" }}
                       />
                       <Card.Body>
-                        <Card.Title>{product.name}</Card.Title>
-                        <Card.Text>₹{product.price}</Card.Text>
-                        <Card.Text>{product.description}</Card.Text>
+                        <Card.Title style={{ height: "3rem" }}>
+                          {product.name}
+                        </Card.Title>
+                        <Card.Text style={{ fontSize: "large" }}>
+                          ₹{product.price}
+                        </Card.Text>
+                        <Card.Text style={{ height: "3rem" }}>
+                          {product.description}
+                        </Card.Text>
                         <Card.Text>
                           Seller: {item.fname + " " + item.lname}
                         </Card.Text>
