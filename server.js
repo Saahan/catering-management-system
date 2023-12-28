@@ -87,8 +87,17 @@ app.get("/api/myproducts", (req, res) => {
 });
 
 app.get("/api/productlist", (req, res) => {
-  userDatas.find({accountType: "Seller"}).then((docs) => {res.send(docs)});
-})
+  userDatas.find({ accountType: "Seller" }).then((docs) => {
+    res.send(docs);
+  });
+});
+
+app.get("/api/cartdetails", (req, res) => {
+  let user = req.query.user;
+  userDatas.find({ uid: user }).then((docs) => {
+    res.send(docs[0].cart);
+  });
+});
 
 app.put("/api/deleteproduct", (req, res) => {
   let uid = req.body.uid;
@@ -97,6 +106,50 @@ app.put("/api/deleteproduct", (req, res) => {
   userDatas
     .findOneAndUpdate({ uid: uid }, { $pull: { products: { id: itemId } } })
     .then((docs) => console.log("deleted product"));
+});
+
+app.put("/api/addtocart", (req, res) => {
+  let sellerName = req.body.sellerName;
+
+  let product = req.body.product;
+  product.sellerName = sellerName;
+
+  let uid = req.body.uid;
+
+  userDatas.findOne({ uid: uid }).then((docs) => {
+    //console.log(docs.cart);
+    //console.log(product);
+
+    if (docs.cart.some((item) => item.id === product.id)) {
+      console.log("cart has product");
+    } else {
+      userDatas
+        .findOneAndUpdate({ uid: uid }, { $push: { cart: product } })
+        .then((docs) => {console.log("added product to cart"); res.send(docs)});
+    }
+  });
+});
+
+app.put("/api/deletefromcart", (req, res) => {
+  let uid = req.body.uid;
+  let itemId = req.body.itemId;
+
+  console.log(uid, itemId);
+
+  userDatas
+    .findOneAndUpdate({ uid: uid }, { $pull: { cart: { id: itemId } } })
+    .then((docs) => {console.log("product removed from cart"); res.send(docs)});
+});
+
+app.put("/api/placeorder", (req, res) => {
+  let uid = req.body.uid;
+  let cartData = req.body.cartData;
+
+  console.log("order placed!", uid, cartData);
+
+  // userDatas
+  //   .findOneAndUpdate({ uid: uid }, { $pull: { cart: { id: itemId } } })
+  //   .then((docs) => {console.log("product removed from cart"); res.send(docs)});
 });
 
 app.listen(port, () => {

@@ -9,15 +9,46 @@ export default function Browse(props) {
 
   useEffect(() => {
     axios.get("http://localhost:5000/api/productlist").then((docs) => {
-      console.log(docs.data);
+      //console.log(docs.data);
       setProductsData(docs.data);
     });
   }, []);
 
+  function addToCart(sellerName, product) {
+    document.getElementById(product.id).innerHTML =
+      '<img src="/img/check.svg" width="20" height="20" alt="cart-icon" style="filter:invert(1)"/>';
+    document.getElementById(product.id).style.backgroundColor = "green";
+    document.getElementById(product.id).disabled = true;
+    //console.log(sellerName, product, props.userData.uid);
+    axios({
+      method: "put",
+      url: "http://localhost:5000/api/addtocart",
+      data: {
+        sellerName: sellerName,
+        product: product,
+        uid: props.userData.uid,
+      },
+      headers: { "content-type": "application/json" },
+    }).then((docs) => {
+      console.log(`Added ${product.name} to cart`, docs.data.cart.length);
+      props.sendCartQty(docs.data.cart.length + 1);
+    });
+    setTimeout(() => {
+      document.getElementById(product.id).innerHTML =
+        '<img src="/img/cart-icon.svg" width="20" height="20" alt="cart-icon" style="filter:invert(1)"/>';
+      document.getElementById(product.id).style.backgroundColor = "";
+      document.getElementById(product.id).disabled = false;
+    }, 500);
+  }
+
   return (
     <div className="container">
       <h1>Products:</h1> <hr />
-      {productsData !== null ? (
+      {productsData === null ? (
+        <ReactLoading type="bubbles" color="darkblue" className="loading" />
+      ) : productsData.length === 0 ? (
+        <p>No products currently on sale. Please check back later.</p>
+      ) : (
         productsData.map((item) => {
           return (
             <Row key={item.uid} className="product-container">
@@ -45,14 +76,28 @@ export default function Browse(props) {
                           {product.name}
                         </Card.Title>
                         <Card.Text style={{ fontSize: "large" }}>
-                          ₹{product.price}
+                          ₹{product.price}/Kg
                         </Card.Text>
                         <Card.Text style={{ height: "3rem" }}>
                           {product.description}
                         </Card.Text>
                       </Card.Body>
                       <Card.Footer className="text-center">
-                        <Button variant="primary">Add to Cart</Button>
+                        <Button
+                          variant="primary"
+                          onClick={() =>
+                            addToCart(item.fname + " " + item.lname, product)
+                          }
+                          id={product.id}
+                        >
+                          <img
+                            src="/img/cart-icon.svg"
+                            width={20}
+                            height={20}
+                            alt="cart-icon"
+                            style={{ filter: "invert(1)" }}
+                          />
+                        </Button>
                       </Card.Footer>
                     </Card>
                   </Col>
@@ -61,8 +106,6 @@ export default function Browse(props) {
             </Row>
           );
         })
-      ) : (
-        <ReactLoading type="bubbles" color="darkblue" className="loading" />
       )}
     </div>
   );

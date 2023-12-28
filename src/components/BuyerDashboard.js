@@ -11,9 +11,9 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 export default function SellerDashboard(props) {
   const storage = getStorage();
   const [view, setView] = useState("Profile");
+  const [cartQty, setCartQty] = useState(props.userData.cart.length);
 
   useEffect(() => {
-    console.log("useffect run");
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
       .then((url) => {
         const img = document.getElementById("profile-pic");
@@ -25,8 +25,13 @@ export default function SellerDashboard(props) {
   }, [props.userData.uid, storage]);
 
   function selectView(e) {
-    console.log(e.target.innerHTML);
-    setView(e.target.innerHTML);
+    console.log(e);
+    setView(e);
+  }
+
+  function sendCartQty(e) {
+    console.log("cart quantity to be updated", e);
+    setCartQty(e);
   }
 
   return (
@@ -50,39 +55,41 @@ export default function SellerDashboard(props) {
           <hr />
           <div
             className={view === "Profile" ? "active" : undefined}
-            onClick={selectView}
+            onClick={() => selectView("Profile")}
           >
             Profile
           </div>
           <div
             className={view === "Browse" ? "active" : undefined}
-            onClick={selectView}
+            onClick={() => selectView("Browse")}
           >
             Browse
           </div>
           <div
             className={view === "Cart" ? "active" : undefined}
-            onClick={selectView}
+            onClick={() => selectView("Cart")}
           >
-            Cart
+            Cart {`(${cartQty})`}
           </div>
           <div
             className={view === "My Orders" ? "active" : undefined}
-            onClick={selectView}
+            onClick={() => selectView("My Orders")}
           >
             My Orders
           </div>
           <div
             className={view === "About" ? "active" : undefined}
-            onClick={selectView}
+            onClick={() => selectView("About")}
           >
             About
           </div>
         </div>
         <div className="main-screen">
           {view === "Profile" && <Profile userData={props.userData} />}
-          {view === "Browse" && <Browse userData={props.userData} />}
-          {view === "Cart" && <Cart userData={props.userData} />}
+          {view === "Browse" && (
+            <Browse userData={props.userData} sendCartQty={sendCartQty} />
+          )}
+          {view === "Cart" && <Cart userData={props.userData} sendCartQty={sendCartQty}/>}
           {view === "My Orders" && <MyOrders userData={props.userData} />}
           {view === "About" && <About />}
         </div>

@@ -30,7 +30,7 @@ export default function App() {
             },
           })
           .then((res) => {
-            console.log(res.data);
+            console.log("user details response from database:", res.data);
             setPriveleges(res.data[0].accountType);
             setUserData(res.data[0]);
           })

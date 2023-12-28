@@ -99,7 +99,7 @@ export default function MyProducts(props) {
                         {item.name}
                       </Card.Title>
                       <Card.Text style={{ fontSize: "large" }}>
-                        ₹{item.price}
+                        ₹{item.price}/Kg
                       </Card.Text>
                       <Card.Text style={{ height: "3rem" }}>
                         {item.description}
