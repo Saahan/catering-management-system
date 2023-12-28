@@ -82,7 +82,7 @@ export default function MyProducts(props) {
             productsArr.map((item) => {
               return (
                 <Col md={6} lg={4} key={item.id}>
-                  <Card style={{ width: "15rem" }}>
+                  <Card style={{ width: "15rem", height:"26rem" }}>
                     <Card.Img
                       variant="top"
                       src={item.productPicUrl}
@@ -198,6 +198,7 @@ function AddProductModal(props) {
             required
             placeholder="Product name"
             id="name"
+            maxLength={40}
           ></input>{" "}
           <br />
           <label htmlFor="price">Price (₹/kg):</label>
@@ -206,6 +207,7 @@ function AddProductModal(props) {
             required
             placeholder="Product price ₹/kg"
             id="price"
+            maxLength={7}
           ></input>
           <br />
           <label htmlFor="description">Description:</label>
@@ -214,6 +216,7 @@ function AddProductModal(props) {
             required
             placeholder="Product description"
             id="description"
+            maxLength={50}
           ></input>{" "}
           <br />
           <label htmlFor="product-image">Upload Image:</label>

@@ -24,7 +24,7 @@ export default function Browse(props) {
               {item.products.map((product) => {
                 return (
                   <Col md={6} lg={4} key={product.id}>
-                    <Card style={{ width: "15rem" }}>
+                    <Card style={{ width: "15rem", height:"26rem" }}>
                       <Card.Img
                         variant="top"
                         src={product.productPicUrl}

@@ -2,12 +2,13 @@
 
 .sidebar {
   margin: 0;
-  padding: 0;
+  padding: 40px 0px 0px 0px;
   width: 15%;
   background-color: #f1f1f1;
   position: fixed;
   height: 100%;
   overflow: auto;
+  top: 0px;
 }
 
 .sidebar div:not(:nth-child(1)):not(:nth-child(2)) {
