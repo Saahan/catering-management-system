@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactLoading from "react-loading";
-import { Button, Card } from "react-bootstrap";
+import { Button, Card, Modal } from "react-bootstrap";
 import "../styles/views.css";
 
 export default function Cart(props) {
   const [cart, setCart] = useState(null);
   const [reload, setReload] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     axios
@@ -50,6 +54,10 @@ export default function Cart(props) {
           cartData: cart,
         },
         headers: { "content-type": "application/json" },
+      }).then((docs) => {
+        props.sendCartQty(0);
+        refresh();
+        handleShow();
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderPlaced]);
@@ -141,6 +149,14 @@ export default function Cart(props) {
           </form>
         )}
       </div>
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Body>Order placed!</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }

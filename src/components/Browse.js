@@ -14,7 +14,7 @@ export default function Browse(props) {
     });
   }, []);
 
-  function addToCart(sellerName, product) {
+  function addToCart(sellerName, sellerUid, product) {
     document.getElementById(product.id).innerHTML =
       '<img src="/img/check.svg" width="20" height="20" alt="cart-icon" style="filter:invert(1)"/>';
     document.getElementById(product.id).style.backgroundColor = "green";
@@ -25,6 +25,7 @@ export default function Browse(props) {
       url: "http://localhost:5000/api/addtocart",
       data: {
         sellerName: sellerName,
+        sellerUid: sellerUid,
         product: product,
         uid: props.userData.uid,
       },
@@ -86,7 +87,7 @@ export default function Browse(props) {
                         <Button
                           variant="primary"
                           onClick={() =>
-                            addToCart(item.fname + " " + item.lname, product)
+                            addToCart(item.fname + " " + item.lname, item.uid, product)
                           }
                           id={product.id}
                         >

@@ -110,9 +110,11 @@ app.put("/api/deleteproduct", (req, res) => {
 
 app.put("/api/addtocart", (req, res) => {
   let sellerName = req.body.sellerName;
+  let sellerUid = req.body.sellerUid;
 
   let product = req.body.product;
   product.sellerName = sellerName;
+  product.sellerUid = sellerUid;
 
   let uid = req.body.uid;
 
@@ -125,7 +127,10 @@ app.put("/api/addtocart", (req, res) => {
     } else {
       userDatas
         .findOneAndUpdate({ uid: uid }, { $push: { cart: product } })
-        .then((docs) => {console.log("added product to cart"); res.send(docs)});
+        .then((docs) => {
+          console.log("added product to cart");
+          res.send(docs);
+        });
     }
   });
 });
@@ -134,22 +139,60 @@ app.put("/api/deletefromcart", (req, res) => {
   let uid = req.body.uid;
   let itemId = req.body.itemId;
 
-  console.log(uid, itemId);
+  //console.log(uid, itemId);
 
   userDatas
     .findOneAndUpdate({ uid: uid }, { $pull: { cart: { id: itemId } } })
-    .then((docs) => {console.log("product removed from cart"); res.send(docs)});
+    .then((docs) => {
+      console.log("product removed from cart");
+      res.send(docs);
+    });
 });
 
 app.put("/api/placeorder", (req, res) => {
   let uid = req.body.uid;
   let cartData = req.body.cartData;
+  let id = Date.now().toString(36);
+  let date = new Date();
 
-  console.log("order placed!", uid, cartData);
+  userDatas.find({ accountType: "Seller" }).then((docs) => {
+    //console.log(docs);
+    docs.forEach((docItem) => {
+      cartData.forEach((cartItem) => {
+        if (docItem.uid === cartItem.sellerUid) {
+          userDatas
+            .findOneAndUpdate(
+              { uid: docItem.uid },
+              {
+                $push: {
+                  ordersReceived: {
+                    id: id,
+                    date: date,
+                    orderedBy: uid,
+                    cartItem,
+                  },
+                },
+              }
+            )
+            .then(console.log("sent order to seller"));
+        }
+      });
+    });
+  });
 
-  // userDatas
-  //   .findOneAndUpdate({ uid: uid }, { $pull: { cart: { id: itemId } } })
-  //   .then((docs) => {console.log("product removed from cart"); res.send(docs)});
+  //console.log("order placed!", uid, cartData);
+
+  userDatas
+    .findOneAndUpdate(
+      { uid: uid },
+      { $push: { orders: { id: id, date: date, cartData } } }
+    )
+    .then(
+      userDatas.findOneAndUpdate({ uid: uid }, { cart: [] }).then((docs) => {
+        console.log("order placed and cart emptied");
+        res.send(docs);
+      })
+    );
 });
 
 app.listen(port, () => {
