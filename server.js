@@ -106,6 +106,13 @@ app.get("/api/ordersdetails", (req, res) => {
   });
 });
 
+app.get("/api/myordersdetails", (req, res) => {
+  let user = req.query.user;
+  userDatas.find({ uid: user }).then((docs) => {
+    res.send(docs[0].orders);
+  });
+});
+
 app.put("/api/deleteproduct", (req, res) => {
   let uid = req.body.uid;
   let itemId = req.body.itemId;
@@ -214,22 +221,35 @@ app.put("/api/fulfillorder", (req, res) => {
   let orderedBy = req.body.orderedBy;
   //console.log(uid, itemId, orderId, orderedBy);
 
-  userDatas
-    .findOne({ uid: uid })
-    .then((docs) => {
-      docs.ordersReceived.forEach((item) => {
-        if (item.id === orderId && item.cartItem.id === itemId) {
-          item.fulfilled = true;
-        }
+  userDatas.findOne({ uid: uid }).then((docs) => {
+    docs.ordersReceived.forEach((item) => {
+      if (item.id === orderId && item.cartItem.id === itemId) {
+        item.fulfilled = true;
+      }
+    });
+
+    userDatas
+      .findOneAndUpdate({ uid: uid }, docs, { new: true })
+      .then((docs) => {
+        console.log("order fulfilled on seller side");
       });
-      //console.log(docs);
-      userDatas
-        .findOneAndUpdate({ uid: uid }, docs, { new: true })
-        .then((docs) => {
-          console.log(docs);
+  });
+
+  userDatas.findOne({ uid: orderedBy }).then((docs) => {
+    docs.orders.forEach((item) => {
+      if (item.id === orderId) {
+        item.cartData.forEach((item) => {
+          if (item.id === itemId) {
+            item.fulfilled = true;
+          }
         });
-    })
-    .then(console.log("docs saved"));
+      }
+    });
+    //console.log(docs);
+    userDatas
+      .findOneAndUpdate({ uid: orderedBy }, docs)
+      .then(console.log("order fulfilled on buyer side"));
+  });
 });
 
 app.listen(port, () => {

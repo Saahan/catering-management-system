@@ -7,6 +7,7 @@ const { format } = require("date-fns");
 
 export default function Orders(props) {
   const [ordersData, setOrdersData] = useState(null);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     axios
@@ -22,7 +23,7 @@ export default function Orders(props) {
       .catch((err) => {
         console.log(err);
       });
-  }, [props.userData.uid]);
+  }, [props.userData.uid, reload]);
 
   function fulfillOrder(orderId, itemId, orderedBy) {
     console.log(orderId, itemId, orderedBy);
@@ -37,6 +38,15 @@ export default function Orders(props) {
       },
       headers: { "content-type": "application/json" },
     });
+
+    refresh();
+  }
+
+  function refresh() {
+    setReload(true);
+    setTimeout(() => {
+      setReload(false);
+    }, 500);
   }
 
   return (
@@ -45,6 +55,8 @@ export default function Orders(props) {
       <Row>
         {ordersData === null ? (
           <ReactLoading type="bubbles" color="darkblue" className="loading" />
+        ) : ordersData.length === 0 ? (
+          <p>No orders...yet.</p>
         ) : (
           ordersData.toReversed().map((item, index) => {
             let date = Date.parse(item.date);
