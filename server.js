@@ -99,6 +99,13 @@ app.get("/api/cartdetails", (req, res) => {
   });
 });
 
+app.get("/api/ordersdetails", (req, res) => {
+  let user = req.query.user;
+  userDatas.find({ uid: user }).then((docs) => {
+    res.send(docs[0].ordersReceived);
+  });
+});
+
 app.put("/api/deleteproduct", (req, res) => {
   let uid = req.body.uid;
   let itemId = req.body.itemId;
@@ -152,6 +159,8 @@ app.put("/api/deletefromcart", (req, res) => {
 app.put("/api/placeorder", (req, res) => {
   let uid = req.body.uid;
   let cartData = req.body.cartData;
+  let orderedByName = req.body.orderedByName;
+  let orderedByContact = req.body.orderedByContact;
   let id = Date.now().toString(36);
   let date = new Date();
 
@@ -169,6 +178,9 @@ app.put("/api/placeorder", (req, res) => {
                     id: id,
                     date: date,
                     orderedBy: uid,
+                    orderedByName: orderedByName,
+                    orderedByContact: orderedByContact,
+                    fulfilled: false,
                     cartItem,
                   },
                 },
@@ -193,6 +205,31 @@ app.put("/api/placeorder", (req, res) => {
         res.send(docs);
       })
     );
+});
+
+app.put("/api/fulfillorder", (req, res) => {
+  let uid = req.body.uid;
+  let itemId = req.body.itemId;
+  let orderId = req.body.orderId;
+  let orderedBy = req.body.orderedBy;
+  //console.log(uid, itemId, orderId, orderedBy);
+
+  userDatas
+    .findOne({ uid: uid })
+    .then((docs) => {
+      docs.ordersReceived.forEach((item) => {
+        if (item.id === orderId && item.cartItem.id === itemId) {
+          item.fulfilled = true;
+        }
+      });
+      //console.log(docs);
+      userDatas
+        .findOneAndUpdate({ uid: uid }, docs, { new: true })
+        .then((docs) => {
+          console.log(docs);
+        });
+    })
+    .then(console.log("docs saved"));
 });
 
 app.listen(port, () => {

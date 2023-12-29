@@ -51,6 +51,8 @@ export default function Cart(props) {
         url: "http://localhost:5000/api/placeorder",
         data: {
           uid: props.userData.uid,
+          orderedByName: props.userData.fname + " " + props.userData.lname,
+          orderedByContact: props.userData.phoneNumber,
           cartData: cart,
         },
         headers: { "content-type": "application/json" },

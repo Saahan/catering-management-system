@@ -108,11 +108,18 @@ export default function MyProducts(props) {
                     <Card.Footer className="text-center">
                       <Button
                         variant="primary"
+                        style={{backgroundColor:"maroon", border:"none"}}
                         onClick={() => {
                           deleteProduct(props.userData.uid, item.id);
                         }}
                       >
-                        Delete
+                        <img
+                          src="/img/bin.svg"
+                          width={20}
+                          height={20}
+                          alt="bin-icon"
+                          style={{ filter: "invert(1)" }}
+                        />
                       </Button>
                     </Card.Footer>
                   </Card>

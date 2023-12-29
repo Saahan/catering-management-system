@@ -12,7 +12,7 @@ export default function SellerDashboard(props) {
   const [view, setView] = useState("Profile");
 
   useEffect(() => {
-    console.log("useffect run");
+    console.log("useffect run for profile pic");
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
       .then((url) => {
         const img = document.getElementById("profile-pic");
