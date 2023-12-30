@@ -22,6 +22,12 @@ export default function MyOrders(props) {
       });
   }, [props.userData.uid]);
 
+  function imgUrlAlt(e) {
+    console.log(e);
+    e.target.src = "/img/blank_food.jpg";
+    e.target.onError = null;
+  }
+
   return (
     <div className="container">
       <h1>My Orders:</h1> <hr />
@@ -48,10 +54,12 @@ export default function MyOrders(props) {
                       }}
                     >
                       <Card.Header>{product.name}</Card.Header>
-                      <Card.Img
+                      <img
                         src={product.productPicUrl}
                         height={200}
+                        onError={imgUrlAlt}
                         style={{ borderRadius: "0px" }}
+                        alt="product no longer listed"
                       />
                       <Card.Body>
                         <span>Qty: {product.quantity} Kg</span> <br />
@@ -68,7 +76,7 @@ export default function MyOrders(props) {
                                 color: "green",
                                 marginTop: "10px",
                                 textAlign: "center",
-                                fontWeight:"bold"
+                                fontWeight: "bold",
                               }}
                             >
                               Order completed!
