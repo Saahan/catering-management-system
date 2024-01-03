@@ -93,6 +93,7 @@ export default function Browse(props) {
                             addToCart(item.fname + " " + item.lname, item.uid, product)
                           }
                           id={product.id}
+                          style={{backgroundColor:"darkblue", border:"none"}}
                         >
                           <img
                             src="/img/cart-icon.svg"

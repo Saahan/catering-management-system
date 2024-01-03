@@ -106,10 +106,7 @@ export default function Cart(props) {
           <form onSubmit={handleSubmit}>
             {cart.map((item) => {
               return (
-                <Card
-                  key={item.id}
-                  className="cart-card"
-                >
+                <Card key={item.id} className="cart-card">
                   <Card.Body>
                     <span>{item.name}</span>,{" "}
                     <span>Sold by {item.sellerName}</span> <br />
@@ -148,7 +145,14 @@ export default function Cart(props) {
                 </Card>
               );
             })}
-            <Button type="submit" style={{ float: "left" }}>
+            <Button
+              type="submit"
+              style={{
+                float: "left",
+                backgroundColor: "darkblue",
+                border: "none",
+              }}
+            >
               Proceed
             </Button>
           </form>
@@ -157,7 +161,11 @@ export default function Cart(props) {
       <Modal show={show} onHide={handleClose}>
         <Modal.Body>Order placed!</Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={handleClose}
+            style={{ backgroundColor: "darkblue", border: "none" }}
+          >
             OK
           </Button>
         </Modal.Footer>

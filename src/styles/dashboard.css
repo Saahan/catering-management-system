@@ -85,9 +85,8 @@
   .sidebar-responsive {
     margin: 0;
     padding: 40px 0px 0px 0px;
-    width: 70%;
+    width: 100%;
     background-color: #f1f1f1;
-    position: fixed;
     height: 100%;
     overflow: auto;
     top: 0px;

@@ -52,7 +52,7 @@ export default function MyOrders(props) {
                     <Card
                       style={{
                         width: "300px",
-                        margin: "30px 0px 40px 0px",
+                        margin: "30px 0px 20px 0px",
                         height: "400px",
                       }}
                     >
