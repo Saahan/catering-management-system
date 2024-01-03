@@ -5,7 +5,7 @@ import { Button, Card, Modal } from "react-bootstrap";
 import "../styles/views.css";
 
 export default function Cart(props) {
-  const [cart, setCart] = useState(null);
+  const [cart, setCart] = useState(null); //initialize the state of the cart data array.
   const [reload, setReload] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [show, setShow] = useState(false);
@@ -14,6 +14,7 @@ export default function Cart(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
+    //send a "GET" request to the backend database to get the cart details for the buyer as per his/her uid (gotten from props).
     axios
       .get("http://localhost:5000/api/cartdetails", {
         params: {
@@ -30,6 +31,7 @@ export default function Cart(props) {
   }, [props.userData.uid, reload]);
 
   function handleSubmit(e) {
+    //when an order is placed, the quantity of the item is set, and the orderPlaced flag is set, which triggers a "PUT" request in the useEffect hook which sends the data to the backend database.
     e.preventDefault();
     //console.log(e);
     setCart((prevState) => {
@@ -57,15 +59,16 @@ export default function Cart(props) {
         },
         headers: { "content-type": "application/json" },
       }).then((docs) => {
-        props.sendCartQty(0);
-        refresh();
-        handleShow();
+        props.sendCartQty(0); //send cart quantity to be updated as "0", as the order has been placed and cart is not empty
+        refresh(); //refreh the view of the cart
+        handleShow();//show an alert as order placed to the user via a Modal
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderPlaced]);
 
   function deleteCartItem(itemId) {
     console.log(itemId);
+    //send a "PUT" request to delete an item from the cart, and reduce the cart quantity by 1 in the parent component via props.sendCartQty function.
     axios({
       method: "put",
       url: "http://localhost:5000/api/deletefromcart",

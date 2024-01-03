@@ -5,9 +5,10 @@ import ReactLoading from "react-loading";
 import { Button, Row, Col, Card } from "react-bootstrap";
 
 export default function Browse(props) {
-  const [productsData, setProductsData] = useState(null);
+  const [productsData, setProductsData] = useState(null); //intitalize the state of product data
 
   useEffect(() => {
+    //send a "GET" request to the backend to get the product data of all sellers, and set productsData state array.
     axios.get("http://localhost:5000/api/productlist").then((docs) => {
       //console.log(docs.data);
       setProductsData(docs.data);
@@ -15,6 +16,8 @@ export default function Browse(props) {
   }, []);
 
   function addToCart(sellerName, sellerUid, product) {
+    //add item to cart, it sends a "PUT" request to the backend to update the cart data for the user as per his/her uid
+    //also change the display of buttons to a checkmark when one of those items is added to cart for 500ms and change back to the previous icon as seen in the Timeout function
     document.getElementById(product.id).innerHTML =
       '<img src="/img/check.svg" width="20" height="20" alt="cart-icon" style="filter:invert(1)"/>';
     document.getElementById(product.id).style.backgroundColor = "green";

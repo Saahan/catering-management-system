@@ -14,6 +14,8 @@ import ReactLoading from "react-loading";
 import Card from "react-bootstrap/Card";
 
 export default function MyProducts(props) {
+  //this view allows the seller to upload items to his/her marketplace. The data can be entered via a modal, and an image under 1MB can also be uploaded via the same.
+  //other states are similar as described in other components.
   const [show, setShow] = useState(false);
   const [productsArr, setProductsArr] = useState(null);
   const [reload, setReload] = useState(false);
@@ -23,6 +25,7 @@ export default function MyProducts(props) {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
+    //send a "GET" request to get the seller products data from the backend database.
     axios
       .get("http://localhost:5000/api/myproducts", {
         params: {
@@ -37,6 +40,7 @@ export default function MyProducts(props) {
   }, [props.userData.uid, reload]);
 
   function refresh() {
+    //same functionality as in other components
     setReload(true);
     setTimeout(() => {
       setReload(false);
@@ -44,6 +48,7 @@ export default function MyProducts(props) {
   }
 
   function deleteImage(uid, itemId) {
+    //delete the image of the product in the firebase storage when a product is deleted by the seller, via the deleteProduct handler. Notice that this function is called inside that handler.
     const desertRef = ref(storage, `/${uid}/${itemId}`);
     deleteObject(desertRef)
       .then(console.log("deleted image for product"))
@@ -51,6 +56,9 @@ export default function MyProducts(props) {
   }
 
   function deleteProduct(uid, itemId) {
+    // handler to allow user to delete a product, triggered when the seller clicks on the delete button below the product card.
+    // it sends a "PUT" request to the backend where the deletion is handled, and also the image of the product is deleted.
+
     //console.log(uid);
     axios({
       method: "put",

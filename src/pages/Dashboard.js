@@ -5,6 +5,7 @@ import SellerDashboard from "../components/SellerDashboard";
 import ReactLoading from "react-loading";
 
 export default function Dashboard(props) {
+  //set the dashboard view as per user priveleged, i.e. buyer or seller.
 
   switch (props.privileges) {
     case "Buyer":

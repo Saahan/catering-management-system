@@ -7,9 +7,11 @@ import ReactLoading from "react-loading";
 const { format } = require("date-fns");
 
 export default function MyOrders(props) {
+  //this view allows the buyer to check his/her orders and also check the status of the same.
   const [myOrdersData, setMyOrdersData] = useState(null);
 
   useEffect(() => {
+    //send a "GET" request to the backend to get the order data for the particular user as per his/her uid (gotten from the props).
     axios
       .get("http://localhost:5000/api/myordersdetails", {
         params: {
@@ -23,6 +25,7 @@ export default function MyOrders(props) {
   }, [props.userData.uid]);
 
   function imgUrlAlt(e) {
+    //if the product is no longer available on the seller side, the image of that product in the "order history" is replaced by a generic food image.
     console.log(e);
     e.target.src = "/img/blank_food.jpg";
     e.target.onError = null;

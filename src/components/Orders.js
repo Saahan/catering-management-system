@@ -6,10 +6,12 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 const { format } = require("date-fns");
 
 export default function Orders(props) {
+  // this component is for the sellers to check what orders they have received from different buyers.
   const [ordersData, setOrdersData] = useState(null);
   const [reload, setReload] = useState(false);
 
   useEffect(() => {
+    //do a "GET" request to the database to get the list of orders, and set the ordersData state array accordingly.
     axios
       .get("http://localhost:5000/api/ordersdetails", {
         params: {
@@ -26,6 +28,7 @@ export default function Orders(props) {
   }, [props.userData.uid, reload]);
 
   function fulfillOrder(orderId, itemId, orderedBy) {
+    //when the order is completed on the seller side, he/she can click this button to fulfill the order and let the buyer know about the same. A "PUT" request is sent to the backend where the data for order is tagged as completed.
     console.log(orderId, itemId, orderedBy);
     axios({
       method: "put",
@@ -43,6 +46,7 @@ export default function Orders(props) {
   }
 
   function refresh() {
+    //this function when called refreshes the orders view to the most updated state by triggering the useEffect hook (one of its dependencies is the reload state, which is set and reset inside this function).
     setReload(true);
     setTimeout(() => {
       setReload(false);

@@ -12,13 +12,15 @@ app.use(bodyParser.json());
 
 app.use(cors()); //enable Access-Control-Origin from all sources using cors package
 
-const port = 5000;
+const port = process.env.port || 5000;
 
 main().catch((err) => console.log(err));
 
 async function main() {
   await mongoose.connect(process.env.REACT_APP_MONGODBURL);
 }
+
+//create a schema for user data to be stored. Their products, cart data, orders and orderReceived are also stored as arrays using this schema.
 
 const userdataSchema = new mongoose.Schema({
   uid: String,
@@ -34,6 +36,8 @@ const userdataSchema = new mongoose.Schema({
 });
 
 const userDatas = mongoose.model("userdatas", userdataSchema);
+
+//all API calls are self explanatory with additional explanation inside the request on a case by case basis.
 
 app.post("/api/signup", (req, res) => {
   let userDataObj = new userDatas({
@@ -136,6 +140,7 @@ app.put("/api/addtocart", (req, res) => {
     //console.log(docs.cart);
     //console.log(product);
 
+    //if cart already has product, the product is not added again, because the quantity of product can be edited in the cart view of the dashboard.
     if (docs.cart.some((item) => item.id === product.id)) {
       console.log("cart has product");
     } else {
@@ -171,10 +176,14 @@ app.put("/api/placeorder", (req, res) => {
   let id = Date.now().toString(36);
   let date = new Date();
 
+  //when the order is placed, the buyer and seller databased are updated with the product accordingly. Buyer data is stored in "orders" array and seller data is stored in "ordersReceived" array.
+
   userDatas.find({ accountType: "Seller" }).then((docs) => {
     //console.log(docs);
     docs.forEach((docItem) => {
       cartData.forEach((cartItem) => {
+        //cartData is sorted as per the seller whose product is ordered, identified by the sellerUid vairable. the docItem.uid variable is compared to sellerUid to see if that product belongs to the seller.
+
         if (docItem.uid === cartItem.sellerUid) {
           userDatas
             .findOneAndUpdate(
@@ -215,6 +224,7 @@ app.put("/api/placeorder", (req, res) => {
 });
 
 app.put("/api/fulfillorder", (req, res) => {
+  //when the order is fulfilled on the seller side, the order is marked as "completed" on the buyers side by setting the item.fulfilled flag as true in the database.
   let uid = req.body.uid;
   let itemId = req.body.itemId;
   let orderId = req.body.orderId;
@@ -231,7 +241,7 @@ app.put("/api/fulfillorder", (req, res) => {
     userDatas
       .findOneAndUpdate({ uid: uid }, docs, { new: true })
       .then((docs) => {
-        console.log("order fulfilled on seller side");
+        console.log("order fulfilled on seller side"); // the sellers orderReceived array is updated with order fulfilled tag.
       });
   });
 
@@ -248,7 +258,7 @@ app.put("/api/fulfillorder", (req, res) => {
     //console.log(docs);
     userDatas
       .findOneAndUpdate({ uid: orderedBy }, docs)
-      .then(console.log("order fulfilled on buyer side"));
+      .then(console.log("order fulfilled on buyer side")); //the buyer has the order array fulfilled tag as true in his/her database as well.
   });
 });
 

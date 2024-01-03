@@ -11,7 +11,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 export default function SellerDashboard(props) {
   const storage = getStorage();
   const [view, setView] = useState("Profile");
-  const [cartQty, setCartQty] = useState(props.userData.cart.length);
+  const [cartQty, setCartQty] = useState(props.userData.cart.length); //initialize cart quantity data, to display alongside the cart selection button on the sidebar
 
   useEffect(() => {
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
@@ -30,6 +30,7 @@ export default function SellerDashboard(props) {
   }
 
   function sendCartQty(e) {
+    //set cart quantity whenever an item is deleted or added in the child components "Browse.js" and "Cart.js", this data comes from those children
     console.log("cart quantity to be updated", e);
     setCartQty(e);
   }

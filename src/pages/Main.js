@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/main.css";
 
 export default function Main() {
+  //firebase auth sign in using the sign in data in the handleSignIn function
   const auth = getAuth(app);
   const navigate = useNavigate();
   const [errorText, setErrorText] = useState("");

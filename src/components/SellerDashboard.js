@@ -9,9 +9,10 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export default function SellerDashboard(props) {
   const storage = getStorage();
-  const [view, setView] = useState("Profile");
+  const [view, setView] = useState("Profile"); //initialize the view of the page, defaulted to "profile"
 
   useEffect(() => {
+    // set profile picture img src attribute by getting the URL from firebase storage
     console.log("useffect run for profile pic");
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
       .then((url) => {
@@ -24,6 +25,7 @@ export default function SellerDashboard(props) {
   }, [props.userData.uid, storage]);
 
   function selectView(e) {
+    //setting view of the dashboard as per user selection
     console.log(e.target.innerHTML);
     setView(e.target.innerHTML);
   }

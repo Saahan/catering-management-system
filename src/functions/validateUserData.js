@@ -1,4 +1,5 @@
 export default function validateUserData(data) {
+  //validate signup data to check if phone number is 10 digits and the passwords match, in addition the firebase password validation rules.
   var phoneno = /^\d{10}$/;
   var phoneValid = false;
   var passwordValid = false;

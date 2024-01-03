@@ -12,6 +12,7 @@ import AccountCreated from "./pages/AccountCreated.js";
 import Protected from "./components/Protected.js";
 
 export default function App() {
+  //firebase authentication
   const auth = getAuth(app);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [privileges, setPriveleges] = useState("");
@@ -19,6 +20,7 @@ export default function App() {
 
   useEffect(() => {
     return onAuthStateChanged(auth, (user) => {
+      //authenticate user if he/she is loggin in
       if (user) {
         setIsAuthenticated(true);
         setPriveleges("");
@@ -31,8 +33,8 @@ export default function App() {
           })
           .then((res) => {
             console.log("user details response from database:", res.data);
-            setPriveleges(res.data[0].accountType);
-            setUserData(res.data[0]);
+            setPriveleges(res.data[0].accountType); //set priveleges as per the type of account, which can be selected when creating the account
+            setUserData(res.data[0]); //set user data, which consists personal details.
           })
           .catch((err) => {
             console.log(err);
@@ -66,6 +68,7 @@ export default function App() {
           <Route
             path="/dashboard"
             element={
+              //the Protected component only renders its child, the dashboard if the user is authenticated
               <Protected isAuthenticated={isAuthenticated}>
                 <Dashboard privileges={privileges} userData={userData} />
               </Protected>

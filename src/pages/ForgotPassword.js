@@ -6,6 +6,7 @@ import { app } from "../firebase.js";
 import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
+  //this component asks the user for his/her email and the sends a password verification link to the said email, which is generatd and handled by firebase.
   const auth = getAuth(app);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     let email = e.target[0].value;
     document.getElementById("pw-reset-form").reset();
-    sendPasswordResetEmail(auth, email)
+    sendPasswordResetEmail(auth, email) //firebase function to send the link to the said email.
       .then(() => {
         // Password reset email sent!
         setMessage(

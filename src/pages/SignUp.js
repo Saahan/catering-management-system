@@ -10,6 +10,7 @@ import validateUserData from "../functions/validateUserData.js";
 import axios from "axios";
 
 export default function SignUp() {
+  //firebase signup with createUserWithEmailAndPassword, and also storing user data via a "POST" request in the backend database using the firebase uid as an identifier.
   const auth = getAuth(app);
   const navigate = useNavigate();
   const [validationText, setValidationText] = useState("");
