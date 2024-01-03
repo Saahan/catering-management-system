@@ -37,7 +37,7 @@ export default function SignUp() {
           console.log(userCredential);
           axios({
             method: "post",
-            url: "http://localhost:5000/api/signup",
+            url: "https://catering-management-system-api.onrender.com/api/signup",
             data: {
               uid: userCredential.user.uid,
               fname: userData.fname,

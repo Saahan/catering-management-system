@@ -27,7 +27,7 @@ export default function MyProducts(props) {
   useEffect(() => {
     //send a "GET" request to get the seller products data from the backend database.
     axios
-      .get("http://localhost:5000/api/myproducts", {
+      .get("https://catering-management-system-api.onrender.com/api/myproducts", {
         params: {
           user: props.userData.uid,
         },
@@ -62,7 +62,7 @@ export default function MyProducts(props) {
     //console.log(uid);
     axios({
       method: "put",
-      url: "http://localhost:5000/api/deleteproduct",
+      url: "https://catering-management-system-api.onrender.com/api/deleteproduct",
       data: { uid: uid, itemId: itemId },
       headers: { "content-type": "application/json" },
     }).then(refresh());
@@ -186,7 +186,7 @@ function AddProductModal(props) {
 
               axios({
                 method: "post",
-                url: "http://localhost:5000/api/addproduct",
+                url: "https://catering-management-system-api.onrender.com/api/addproduct",
                 data: productData,
                 headers: { "content-type": "application/json" },
               })

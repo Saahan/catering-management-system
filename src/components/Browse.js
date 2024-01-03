@@ -9,10 +9,14 @@ export default function Browse(props) {
 
   useEffect(() => {
     //send a "GET" request to the backend to get the product data of all sellers, and set productsData state array.
-    axios.get("http://localhost:5000/api/productlist").then((docs) => {
-      //console.log(docs.data);
-      setProductsData(docs.data);
-    });
+    axios
+      .get(
+        "https://catering-management-system-api.onrender.com/api/productlist"
+      )
+      .then((docs) => {
+        //console.log(docs.data);
+        setProductsData(docs.data);
+      });
   }, []);
 
   function addToCart(sellerName, sellerUid, product) {
@@ -25,7 +29,7 @@ export default function Browse(props) {
     //console.log(sellerName, product, props.userData.uid);
     axios({
       method: "put",
-      url: "http://localhost:5000/api/addtocart",
+      url: "https://catering-management-system-api.onrender.com/api/addtocart",
       data: {
         sellerName: sellerName,
         sellerUid: sellerUid,
@@ -90,10 +94,17 @@ export default function Browse(props) {
                         <Button
                           variant="primary"
                           onClick={() =>
-                            addToCart(item.fname + " " + item.lname, item.uid, product)
+                            addToCart(
+                              item.fname + " " + item.lname,
+                              item.uid,
+                              product
+                            )
                           }
                           id={product.id}
-                          style={{backgroundColor:"darkblue", border:"none"}}
+                          style={{
+                            backgroundColor: "darkblue",
+                            border: "none",
+                          }}
                         >
                           <img
                             src="/img/cart-icon.svg"

@@ -13,7 +13,7 @@ export default function Orders(props) {
   useEffect(() => {
     //do a "GET" request to the database to get the list of orders, and set the ordersData state array accordingly.
     axios
-      .get("http://localhost:5000/api/ordersdetails", {
+      .get("https://catering-management-system-api.onrender.com/api/ordersdetails", {
         params: {
           user: props.userData.uid,
         },
@@ -32,7 +32,7 @@ export default function Orders(props) {
     console.log(orderId, itemId, orderedBy);
     axios({
       method: "put",
-      url: "http://localhost:5000/api/fulfillorder",
+      url: "https://catering-management-system-api.onrender.com/api/fulfillorder",
       data: {
         uid: props.userData.uid,
         orderId: orderId,

@@ -16,7 +16,7 @@ export default function Cart(props) {
   useEffect(() => {
     //send a "GET" request to the backend database to get the cart details for the buyer as per his/her uid (gotten from props).
     axios
-      .get("http://localhost:5000/api/cartdetails", {
+      .get("https://catering-management-system-api.onrender.com/api/cartdetails", {
         params: {
           user: props.userData.uid,
         },
@@ -50,7 +50,7 @@ export default function Cart(props) {
     cart !== null &&
       axios({
         method: "put",
-        url: "http://localhost:5000/api/placeorder",
+        url: "https://catering-management-system-api.onrender.com/api/placeorder",
         data: {
           uid: props.userData.uid,
           orderedByName: props.userData.fname + " " + props.userData.lname,
@@ -71,7 +71,7 @@ export default function Cart(props) {
     //send a "PUT" request to delete an item from the cart, and reduce the cart quantity by 1 in the parent component via props.sendCartQty function.
     axios({
       method: "put",
-      url: "http://localhost:5000/api/deletefromcart",
+      url: "https://catering-management-system-api.onrender.com/api/deletefromcart",
       data: {
         uid: props.userData.uid,
         itemId: itemId,

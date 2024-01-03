@@ -13,7 +13,7 @@ export default function MyOrders(props) {
   useEffect(() => {
     //send a "GET" request to the backend to get the order data for the particular user as per his/her uid (gotten from the props).
     axios
-      .get("http://localhost:5000/api/myordersdetails", {
+      .get("https://catering-management-system-api.onrender.com/api/myordersdetails", {
         params: {
           user: props.userData.uid,
         },
