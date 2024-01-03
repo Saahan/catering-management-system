@@ -7,17 +7,23 @@ import Cart from "./Cart";
 import About from "./About";
 import MyOrders from "./MyOrders";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import BuyerSideBar from "./BuyerSideBar";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
 export default function SellerDashboard(props) {
   const storage = getStorage();
   const [view, setView] = useState("Profile");
   const [cartQty, setCartQty] = useState(props.userData.cart.length); //initialize cart quantity data, to display alongside the cart selection button on the sidebar
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
       .then((url) => {
-        const img = document.getElementById("profile-pic");
-        img.setAttribute("src", url);
+        setProfilePicUrl(url);
       })
       .catch((error) => {
         console.log(error);
@@ -35,66 +41,46 @@ export default function SellerDashboard(props) {
     setCartQty(e);
   }
 
+  function showSideBar() {
+    handleShow();
+  }
+
   return (
     <div>
-      <NavBar />
+      <NavBar showSideBar={showSideBar} />
       <div>
-        <div className="sidebar">
-          <div className="text-center" style={{ marginTop: "30px" }}>
-            <img
-              alt="profile-pic"
-              id="profile-pic"
-              width={100}
-              height={100}
-              style={{ borderRadius: "100px" }}
-            ></img>
-          </div>
-          <div className="user-welcome">
-            Welcome, <br />
-            {props.userData.fname}
-          </div>
-          <hr />
-          <div
-            className={view === "Profile" ? "active" : undefined}
-            onClick={() => selectView("Profile")}
-          >
-            Profile
-          </div>
-          <div
-            className={view === "Browse" ? "active" : undefined}
-            onClick={() => selectView("Browse")}
-          >
-            Browse
-          </div>
-          <div
-            className={view === "Cart" ? "active" : undefined}
-            onClick={() => selectView("Cart")}
-          >
-            Cart {`(${cartQty})`}
-          </div>
-          <div
-            className={view === "My Orders" ? "active" : undefined}
-            onClick={() => selectView("My Orders")}
-          >
-            My Orders
-          </div>
-          <div
-            className={view === "About" ? "active" : undefined}
-            onClick={() => selectView("About")}
-          >
-            About
-          </div>
-        </div>
+        <BuyerSideBar
+          selectView={selectView}
+          view={view}
+          cartQty={cartQty}
+          userData={props.userData}
+          handleClose={() => {}}
+          profilePicUrl={profilePicUrl}
+          sideBarResponsive={"sidebar"}
+        />
         <div className="main-screen">
           {view === "Profile" && <Profile userData={props.userData} />}
           {view === "Browse" && (
             <Browse userData={props.userData} sendCartQty={sendCartQty} />
           )}
-          {view === "Cart" && <Cart userData={props.userData} sendCartQty={sendCartQty}/>}
+          {view === "Cart" && (
+            <Cart userData={props.userData} sendCartQty={sendCartQty} />
+          )}
           {view === "My Orders" && <MyOrders userData={props.userData} />}
           {view === "About" && <About />}
         </div>
       </div>
+      <Offcanvas show={show} onHide={handleClose} style={{ width: "70%" }}>
+        <BuyerSideBar
+          userData={props.userData}
+          view={view}
+          cartQty={cartQty}
+          selectView={selectView}
+          handleClose={handleClose}
+          profilePicUrl={profilePicUrl}
+          sideBarResponsive={"sidebar-responsive"}
+        />
+      </Offcanvas>
     </div>
   );
 }

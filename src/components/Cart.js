@@ -61,7 +61,7 @@ export default function Cart(props) {
       }).then((docs) => {
         props.sendCartQty(0); //send cart quantity to be updated as "0", as the order has been placed and cart is not empty
         refresh(); //refreh the view of the cart
-        handleShow();//show an alert as order placed to the user via a Modal
+        handleShow(); //show an alert as order placed to the user via a Modal
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderPlaced]);
@@ -97,7 +97,7 @@ export default function Cart(props) {
         Please verify your items and place order. Order once placed will not be
         cancelled. Please contact seller for further inquiry.{" "}
       </p>
-      <div style={{ width: "600px" }}>
+      <div>
         {cart === null ? (
           <ReactLoading type="bubbles" color="darkblue" className="loading" />
         ) : cart.length === 0 ? (
@@ -108,11 +108,11 @@ export default function Cart(props) {
               return (
                 <Card
                   key={item.id}
-                  style={{ width: "600px", margin: "30px 0px 40px 0px" }}
+                  className="cart-card"
                 >
                   <Card.Body>
                     <span>{item.name}</span>,{" "}
-                    <span>Sold by {item.sellerName}</span>
+                    <span>Sold by {item.sellerName}</span> <br />
                     <span style={{ float: "right" }}>
                       ₹{item.price}/Kg
                     </span>{" "}
@@ -148,7 +148,7 @@ export default function Cart(props) {
                 </Card>
               );
             })}
-            <Button type="submit" style={{ float: "right" }}>
+            <Button type="submit" style={{ float: "left" }}>
               Proceed
             </Button>
           </form>

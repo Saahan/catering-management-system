@@ -69,3 +69,24 @@ input[type="file"]::file-selector-button:active {
 .add-product-form label {
   width: 130px;
 }
+
+.cart-card {
+  width: 600px;
+  margin: 30px 0px 40px 0px;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .container {
+    padding: 80px 30px 0px 30px;
+  }
+
+  .profile-div {
+    width: 300px;
+  }
+
+  .cart-card {
+    width: 300px;
+    height: 150px;
+    font-size: smaller;
+  }
+}

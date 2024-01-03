@@ -44,3 +44,15 @@
   margin-bottom: 10px;
   border: 1px solid lightgray;
 }
+
+/* Media Queries */
+
+@media only screen and (max-device-width: 480px) {
+  .main-container {
+    width: 300px;
+  }
+
+  .button {
+    width: 260px;
+  }
+}

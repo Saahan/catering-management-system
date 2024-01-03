@@ -5,19 +5,26 @@ import Profile from "./Profile";
 import Orders from "./Orders";
 import MyProducts from "./MyProducts";
 import About from "./About";
+import SellerSideBar from "./SellerSideBar";
+import Offcanvas from "react-bootstrap/Offcanvas";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export default function SellerDashboard(props) {
-  const storage = getStorage();
   const [view, setView] = useState("Profile"); //initialize the view of the page, defaulted to "profile"
+  const [show, setShow] = useState(false);
+
+  const [profilePicUrl, setProfilePicUrl] = useState(null);
+  const storage = getStorage();
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     // set profile picture img src attribute by getting the URL from firebase storage
     console.log("useffect run for profile pic");
     getDownloadURL(ref(storage, `profile-pics/${props.userData.uid}`))
       .then((url) => {
-        const img = document.getElementById("profile-pic");
-        img.setAttribute("src", url);
+        setProfilePicUrl(url);
       })
       .catch((error) => {
         console.log(error);
@@ -30,50 +37,22 @@ export default function SellerDashboard(props) {
     setView(e.target.innerHTML);
   }
 
+  function showSideBar() {
+    handleShow();
+  }
+
   return (
     <div>
-      <NavBar />
+      <NavBar showSideBar={showSideBar} />
       <div>
-        <div className="sidebar">
-          <div className="text-center" style={{ marginTop: "30px" }}>
-            <img
-              alt="profile-pic"
-              id="profile-pic"
-              width={100}
-              height={100}
-              style={{ borderRadius: "100px" }}
-            ></img>
-          </div>
-          <div className="user-welcome">
-            Welcome, <br />
-            {props.userData.fname}
-          </div>
-          <hr />
-          <div
-            className={view === "Profile" ? "active" : undefined}
-            onClick={selectView}
-          >
-            Profile
-          </div>
-          <div
-            className={view === "Orders" ? "active" : undefined}
-            onClick={selectView}
-          >
-            Orders
-          </div>
-          <div
-            className={view === "My Products" ? "active" : undefined}
-            onClick={selectView}
-          >
-            My Products
-          </div>
-          <div
-            className={view === "About" ? "active" : undefined}
-            onClick={selectView}
-          >
-            About
-          </div>
-        </div>
+        <SellerSideBar
+          userData={props.userData}
+          view={view}
+          selectView={selectView}
+          handleClose={() => {}}
+          profilePicUrl={profilePicUrl}
+          sideBarResponsive={"sidebar"}
+        />
         <div className="main-screen">
           {view === "Profile" && <Profile userData={props.userData} />}
           {view === "Orders" && <Orders userData={props.userData} />}
@@ -81,6 +60,16 @@ export default function SellerDashboard(props) {
           {view === "About" && <About />}
         </div>
       </div>
+      <Offcanvas show={show} onHide={handleClose} style={{ width: "70%" }}>
+        <SellerSideBar
+          userData={props.userData}
+          view={view}
+          selectView={selectView}
+          handleClose={handleClose}
+          profilePicUrl={profilePicUrl}
+          sideBarResponsive={"sidebar-responsive"}
+        />
+      </Offcanvas>
     </div>
   );
 }

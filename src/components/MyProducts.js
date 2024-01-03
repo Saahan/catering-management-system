@@ -95,6 +95,7 @@ export default function MyProducts(props) {
                       width: "15rem",
                       height: "24rem",
                       textAlign: "center",
+                      marginBottom: "20px",
                     }}
                   >
                     <Card.Img
@@ -116,7 +117,7 @@ export default function MyProducts(props) {
                     <Card.Footer className="text-center">
                       <Button
                         variant="primary"
-                        style={{backgroundColor:"maroon", border:"none"}}
+                        style={{ backgroundColor: "maroon", border: "none" }}
                         onClick={() => {
                           deleteProduct(props.userData.uid, item.id);
                         }}
