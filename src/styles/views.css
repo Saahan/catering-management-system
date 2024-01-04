@@ -82,6 +82,7 @@ input[type="file"]::file-selector-button:active {
 
   .profile-div {
     width: 300px;
+    overflow: hidden;
   }
 
   .cart-card {
