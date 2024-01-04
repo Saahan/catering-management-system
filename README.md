@@ -4,6 +4,8 @@ The catering management system connects buyers and sellers of food items, includ
 
 The project is hosted live on: https://catering-management-system.onrender.com
 
+View project report PDF here: https://drive.google.com/file/d/1_UwDCMHfPJUTo2q7UuvAAVEERUvpAW26/view?usp=drive_link
+
 Note: Please wait for a minute or so for the site to load for the first time. Because they are hosted on a free account, the backend services dial down after 15 minutes of inactivity.
 
 ## Features
