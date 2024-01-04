@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# Catering Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The catering management system connects buyers and sellers of food items, including fully cooked dishes as well as raw materials. Products are sold in bulk by weight, while the seller takes care of packaging and delivery. It is our mission to provide an excellent platform for caterers to showcase their products and sell them remotely to clients located all around the country. Happy buying and selling!
 
-## Available Scripts
+The project is hosted live on: https://catering-management-system.onrender.com
 
-In the project directory, you can run:
+Note: Please wait for a minute or so for the site to load for the first time. Because they are hosted on a free account, the backend services dial down after 15 minutes of inactivity.
 
-### `npm start`
+## Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Users can create two types of accounts: "Buyer" and "Seller" which provide their respective priveleges in the functionality that the app offers. The "Dashboard" is rendered as per the priveleges set by the type of account, and is split into different views.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Basically, buyers can buy food products which the sellers are selling.
 
-### `npm test`
+### Buyer Priveleges
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Buyers can:
 
-### `npm run build`
+- View their profile, where they can check out their personal details like name, email and contact details. They can also upload or change their profile picture, which is hosted on Firebase Storage.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Browse products that the vendors have listed for sale. They can check the details, price, and a photo of the product. They can also add products to their cart.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Check the products that they have added to their cart. In this view, they can modify the quantity (in Kg) of the product and also remove the product from the cart before proceeding to place their order.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- View the orders that they have placed. They can check the date that the order was placed, vendor details, final price and the status of the order. In this view, order history is maintained which cannot be erased by the end-user.
 
-### `npm run eject`
+### Seller Priveleges
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Vendors can:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- View their profile, where they can check out their personal details like name, email and contact details. They can also upload or change their profile picture, which is hosted on Firebase Storage.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- View the orders they have received from customers. They can check order details in this view, such as buyer name, contact, date of order, order ID, price and quantity. They can also mark the product as "order fulfilled" if they have received payment and delivered the product to the customer. This action will also let the buyer know that the order has been fulfilled.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Add products to the marketplace via the "My Products" view. They can enter details of the new product, such as name, price, description and photo (hosted on Firebase Storage), with the click of a button. In the same view, they can also check the products they have listed on the marketplace and remove them if they wish.
 
-## Learn More
+## Back-End Stuff
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The details of the buyer and seller, of the products, and orders received as well as placed, are recorded in a MongoDB free tier database. The order placed and received history cannot be erased by the end-users, and it requires them to be erased from the database altogether, in order to remove them. This feature can be expanded in the future where they are simply moved to a different database to be kept in the records.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+This app uses Firebase for authentication as well as for storage of product and profile photos.
 
-### Code Splitting
+This app used ExpressJS for API calls and the API is hosted on Render on the link: https://catering-management-system-api.onrender.com. This service dials down after 15 minutes of inacitivity because it is hosted on a free tier. So please be patient while loading the app for the first time (it takes a minute or so).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Advisory: Do not use real emails and phone numbers to register when checking out the demo of the project. The "Forgot Password" link works perfectly with real emails, but you will have to trust me on it. Feel free to modify the products as you wish, but try not to overload the database with useless data. Thanks!
