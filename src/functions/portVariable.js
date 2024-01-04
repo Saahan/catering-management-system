@@ -1,4 +1,4 @@
-const domainName = "http://localhost:5000"
+const domainName = "https://catering-management-system-api.onrender.com"
 
 export {domainName}
 
