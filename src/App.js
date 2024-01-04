@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard.js";
 import ForgotPassword from "./pages/ForgotPassword.js";
 import AccountCreated from "./pages/AccountCreated.js";
 import Protected from "./components/Protected.js";
+import {domainName} from "./functions/portVariable.js"
 
 export default function App() {
   //firebase authentication
@@ -26,7 +27,7 @@ export default function App() {
         setPriveleges("");
         console.log("app useffect run:", user);
         axios
-          .get("https://catering-management-system-api.onrender.com/api/userdetails", {
+          .get(`${domainName}/api/userdetails`, {
             params: {
               user: user.uid,
             },

@@ -3,6 +3,7 @@ import "../styles/views.css";
 import axios from "axios";
 import { Card, Col, Row } from "react-bootstrap";
 import ReactLoading from "react-loading";
+import {domainName} from "../functions/portVariable.js"
 
 const { format } = require("date-fns");
 
@@ -13,7 +14,7 @@ export default function MyOrders(props) {
   useEffect(() => {
     //send a "GET" request to the backend to get the order data for the particular user as per his/her uid (gotten from the props).
     axios
-      .get("https://catering-management-system-api.onrender.com/api/myordersdetails", {
+      .get(`${domainName}/api/myordersdetails`, {
         params: {
           user: props.userData.uid,
         },

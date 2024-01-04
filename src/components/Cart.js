@@ -3,6 +3,7 @@ import axios from "axios";
 import ReactLoading from "react-loading";
 import { Button, Card, Modal } from "react-bootstrap";
 import "../styles/views.css";
+import {domainName} from "../functions/portVariable.js"
 
 export default function Cart(props) {
   const [cart, setCart] = useState(null); //initialize the state of the cart data array.
@@ -16,7 +17,7 @@ export default function Cart(props) {
   useEffect(() => {
     //send a "GET" request to the backend database to get the cart details for the buyer as per his/her uid (gotten from props).
     axios
-      .get("https://catering-management-system-api.onrender.com/api/cartdetails", {
+      .get(`${domainName}/api/cartdetails`, {
         params: {
           user: props.userData.uid,
         },
@@ -50,7 +51,7 @@ export default function Cart(props) {
     cart !== null &&
       axios({
         method: "put",
-        url: "https://catering-management-system-api.onrender.com/api/placeorder",
+        url: `${domainName}/api/placeorder`,
         data: {
           uid: props.userData.uid,
           orderedByName: props.userData.fname + " " + props.userData.lname,
@@ -71,7 +72,7 @@ export default function Cart(props) {
     //send a "PUT" request to delete an item from the cart, and reduce the cart quantity by 1 in the parent component via props.sendCartQty function.
     axios({
       method: "put",
-      url: "https://catering-management-system-api.onrender.com/api/deletefromcart",
+      url: `${domainName}/api/deletefromcart`,
       data: {
         uid: props.userData.uid,
         itemId: itemId,

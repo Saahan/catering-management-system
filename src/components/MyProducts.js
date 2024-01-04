@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import ReactLoading from "react-loading";
 import Card from "react-bootstrap/Card";
+import {domainName} from "../functions/portVariable.js"
 
 export default function MyProducts(props) {
   //this view allows the seller to upload items to his/her marketplace. The data can be entered via a modal, and an image under 1MB can also be uploaded via the same.
@@ -27,7 +28,7 @@ export default function MyProducts(props) {
   useEffect(() => {
     //send a "GET" request to get the seller products data from the backend database.
     axios
-      .get("https://catering-management-system-api.onrender.com/api/myproducts", {
+      .get(`${domainName}/api/myproducts`, {
         params: {
           user: props.userData.uid,
         },
@@ -62,7 +63,7 @@ export default function MyProducts(props) {
     //console.log(uid);
     axios({
       method: "put",
-      url: "https://catering-management-system-api.onrender.com/api/deleteproduct",
+      url: `${domainName}/api/deleteproduct`,
       data: { uid: uid, itemId: itemId },
       headers: { "content-type": "application/json" },
     }).then(refresh());
@@ -186,7 +187,7 @@ function AddProductModal(props) {
 
               axios({
                 method: "post",
-                url: "https://catering-management-system-api.onrender.com/api/addproduct",
+                url: `${domainName}/api/addproduct`,
                 data: productData,
                 headers: { "content-type": "application/json" },
               })

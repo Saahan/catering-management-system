@@ -3,6 +3,7 @@ import axios from "axios";
 import "../styles/views.css";
 import ReactLoading from "react-loading";
 import { Button, Row, Col, Card } from "react-bootstrap";
+import {domainName} from "../functions/portVariable.js"
 
 export default function Browse(props) {
   const [productsData, setProductsData] = useState(null); //intitalize the state of product data
@@ -11,7 +12,7 @@ export default function Browse(props) {
     //send a "GET" request to the backend to get the product data of all sellers, and set productsData state array.
     axios
       .get(
-        "https://catering-management-system-api.onrender.com/api/productlist"
+        `${domainName}/api/productlist`
       )
       .then((docs) => {
         //console.log(docs.data);
@@ -29,7 +30,7 @@ export default function Browse(props) {
     //console.log(sellerName, product, props.userData.uid);
     axios({
       method: "put",
-      url: "https://catering-management-system-api.onrender.com/api/addtocart",
+      url: `${domainName}/api/addtocart`,
       data: {
         sellerName: sellerName,
         sellerUid: sellerUid,

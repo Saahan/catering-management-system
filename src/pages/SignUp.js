@@ -8,6 +8,7 @@ import "../styles/main.css";
 import { useNavigate } from "react-router-dom";
 import validateUserData from "../functions/validateUserData.js";
 import axios from "axios";
+import {domainName} from "../functions/portVariable.js"
 
 export default function SignUp() {
   //firebase signup with createUserWithEmailAndPassword, and also storing user data via a "POST" request in the backend database using the firebase uid as an identifier.
@@ -37,7 +38,7 @@ export default function SignUp() {
           console.log(userCredential);
           axios({
             method: "post",
-            url: "https://catering-management-system-api.onrender.com/api/signup",
+            url: `${domainName}/api/signup`,
             data: {
               uid: userCredential.user.uid,
               fname: userData.fname,

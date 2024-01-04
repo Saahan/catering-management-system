@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import "../styles/views.css";
 import ReactLoading from "react-loading";
 import { Button, Card, Col, Row } from "react-bootstrap";
+import { domainName } from "../functions/portVariable.js";
+
 const { format } = require("date-fns");
 
 export default function Orders(props) {
@@ -13,7 +15,7 @@ export default function Orders(props) {
   useEffect(() => {
     //do a "GET" request to the database to get the list of orders, and set the ordersData state array accordingly.
     axios
-      .get("https://catering-management-system-api.onrender.com/api/ordersdetails", {
+      .get(`${domainName}/api/ordersdetails`, {
         params: {
           user: props.userData.uid,
         },
@@ -32,7 +34,7 @@ export default function Orders(props) {
     console.log(orderId, itemId, orderedBy);
     axios({
       method: "put",
-      url: "https://catering-management-system-api.onrender.com/api/fulfillorder",
+      url: `${domainName}/api/fulfillorder`,
       data: {
         uid: props.userData.uid,
         orderId: orderId,
