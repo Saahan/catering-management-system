@@ -27,6 +27,7 @@ export default function SellerDashboard(props) {
       })
       .catch((error) => {
         console.log(error);
+        setProfilePicUrl("/img/blank_profile.jpg");
       });
   }, [props.userData.uid, storage]);
 
