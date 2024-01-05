@@ -4,6 +4,10 @@ The catering management system connects buyers and sellers of food items, includ
 
 The project is hosted live on: https://catering-management-system.onrender.com
 
+## Instructions
+
+On first startup of app, please click on the API link https://catering-management-system-api and let it load until you get the message "cannot GET" in the browser (will take a couple of minutes). Then you can open the project live project link mentioned above, or else you will not be able to create an account as the back end API takes some time to get started for the first time on free tier hosting.
+
 View project report PDF here: https://drive.google.com/file/d/1xJktX9u67Xj5jhs7DlFk4_f4vazlFvY4/view?usp=drive_link
 
 Note: Please wait for a minute or so for the site to load for the first time. Because they are hosted on a free account, the backend services dial down after 15 minutes of inactivity.
